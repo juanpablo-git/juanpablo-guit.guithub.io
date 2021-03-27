@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <title>calculadora</title>
+    </head>
+    <style>
+        *{  color:beige;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #caixa{
+            margin: 0 auto;
+            box-shadow : 0px 0px 25px green;
+            background-color: rgba(0, 153, 255, 0.637);
+            width: 500px;
+            height: 200px;
+        }
+        input{
+            color: black;
+        }
+        button{
+            background-color: #09ff00;
+            font-size: 30px;
+        }
+        #resultado{
+            text-align: center;
+            background-color: cornsilk;
+            color: black;
+            width: 100;
+            height: 25;
+        }
+    </style>
+    <body bgcolor="black">
+        <div id="caixa">
+            <center><h2>calculadora</h2></center>
+    primeiro valor: <input type="number" id="numero1">
+    <br>
+    segundo valor: <input type="number" id="numero2">
+    <br>
+    <button onclick="soma()">+</button><button onclick="subtração()">-</button><button onclick="divisao()">/</button>
+    <button onclick="porcento()">%</button>
+    
+    
+    <h3>resultado:
+        <div id="resultado"></div>
+    </h3>
+</div id="caixa">
+<script>
+    var valor1 =document.getElementById("numero1")
+    var valor2 = document.getElementById("numero2")
+    var resultado = document.getElementById("resultado")
+    function soma() {
+     var v1 = Number(valor1.value)
+     var v2 =Number(valor2.value)
+       resultado.innerHTML =v1+v2
+    }
+    function subtração() {
+        var v1 = Number(valor1.value)
+     var v2 =Number(valor2.value)
+        resultado.innerHTML  =v1-v2
+    }
+    function porcento() {
+        var v1 = Number(valor1.value)
+     var v2 =Number(valor2.value)
+        resultado.innerHTML  =v1*(v2/100)
+    }
+    function divisao() {
+        var v1 = Number(valor1.value)
+        var v2 =Number(valor2.value)
+         resultado.innerHTML =  v1/v2
+    }
+</script>
+</body>
+</html>
