@@ -1,0 +1,34 @@
+<html>
+   <input type="text" name="" id="input"> <input type="button" value="enviar" onclick="add()">
+   <ul >
+
+   </ul>
+   <script>
+       var input = document.getElementById("input")
+       var banco = []
+       function criarTarefa(){
+        var li = document.createElement("label")
+        li.innerHTML= `
+        <li id="${banco[banco.length-1]}">
+        <input type="checkbox">${banco[banco.length-1]}
+        <button onclick="del('${banco[banco.length-1]}')">x</button>
+        </li>
+        `
+        document.querySelector("ul").appendChild(li)
+       }
+       function listar() {
+           
+       }
+
+       function add() {
+        var input = document.getElementById("input")
+           banco.push(input.value)
+        criarTarefa()
+           console.log(banco)
+       }
+
+       function del(id) {
+           document.getElementById(id).remove()
+       }
+   </script>
+</html>
