@@ -1,0 +1,52 @@
+<html>
+<head>
+ <link rel="stylesheet" href="style.css">   
+</head>
+<div id="container">
+    <h1>TO-DO LIST</h1>
+   <input type="text" name="" id="input"> <button id="adicionar" onclick="add()"><img src="adicionar.png" width="30" ></button>
+   <ul >
+
+   </ul>
+</div>
+   <script>
+       var input = document.getElementById("input")
+       var banco = []
+
+       function criarTarefa(){
+        var li = document.createElement("div")
+       
+        li.innerHTML= `
+        <li id="${banco[banco.length-1]}">
+        <input  type="checkbox">
+        <label>${banco[banco.length-1]}</label>
+        <button id="delete" onclick="del('${banco[banco.length-1]}')">
+        <img src="lixeira.png" width="25">
+        </button>
+        </li>
+        `
+        document.querySelector("ul").appendChild(li)
+       }
+            
+       function add() {
+        var input = document.getElementById("input")
+        if(input.value == ""){
+            alert("você não pode inserir uma tarefa vazia")
+        }else if(input.value.length>30){
+            alert("caracteres alem do permitido")
+        }else{
+        banco.push(input.value)
+        console.log(input.value.length)
+        criarTarefa()
+           
+
+        }
+       }
+
+       function del(id) {
+           document.getElementById(id).remove()
+       }
+      
+
+   </script>
+</html>
