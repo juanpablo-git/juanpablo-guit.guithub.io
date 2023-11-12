@@ -1,6 +1,8 @@
 import turtle
 import random
 
+jogo_runing = True
+
 window = turtle.Screen()
 window.bgcolor("green")
 window.title("Space Invaders")
@@ -78,36 +80,36 @@ x_fire = 0
 y_fire = 0
 
 def move_fire():
-    global fire_on, x_fire, y_fire,score
-    fire_on = True
-    y_fire =fire.ycor()
-    x_fire = fire.xcor()
+    global fire_on, x_fire, y_fire,score,jogo_runing
+    if fire_on == False and jogo_runing:
+        fire_on = True
+        y_fire =fire.ycor()
+        x_fire = fire.xcor()
 
-    while y_fire < 300:
-        refresh()
-        for inimigo in invaders:
-            x_ini = inimigo.xcor()
-            y_ini = inimigo.ycor()
-            if x_fire >= x_ini -20 and x_fire <= x_ini + 20:
-                if y_fire >= y_ini:
-                    global left_index, right_index, down_index
-                    inimigo.setx(random.randint(-280, 280))
-                    inimigo.sety(random.randint(100, 250))
-                    y_fire = 400
-                    left_index, right_index, down_index = init_pos()
-                    score_pen.clear()
-                    score+=1
-                    score_pen.write("Score: "+str(score), False, align="left", font=("Arial", 14, "normal"))
-                    break
-        y_fire += firespeed
-        fire.sety(y_fire)
+        while y_fire < 300:
+            for inimigo in invaders:
+                x_ini = inimigo.xcor()
+                y_ini = inimigo.ycor()
+                if x_fire >= x_ini -20 and x_fire <= x_ini + 20:
+                    if y_fire >= y_ini:
+                        global left_index, right_index, down_index
+                        inimigo.setx(random.randint(-280, 280))
+                        inimigo.sety(random.randint(100, 250))
+                        y_fire = 400
+                        left_index, right_index, down_index = init_pos()
+                        score_pen.clear()
+                        score+=1
+                        score_pen.write("Score: "+str(score), False, align="left", font=("Arial", 14, "normal"))
+                        break
+            y_fire += firespeed
+            fire.sety(y_fire)
+            refresh()
 
-
-    fire.hideturtle()
-    fire.sety(-185)
-    fire_on = False
-    fire.setx(player.xcor())
-    fire.showturtle()
+        fire.hideturtle()
+        fire.sety(-185)
+        fire.setx(player.xcor())
+        fire.showturtle()
+        fire_on = False
 
 def move_right():
     x = player.xcor()
@@ -207,7 +209,8 @@ def refresh():
     # if y_down <= -280:
     #     break
 def game_breack():
-    global inviders_loop,score
+    global inviders_loop,score,jogo_runing
+    jogo_runing = False
     score = 0
     score_pen.clear()
     score_pen.write("Score: "+str(score), False, align="left", font=("Arial", 14, "normal"))
@@ -223,8 +226,9 @@ def game_breack():
     reload.showturtle()
     reload.shape("reload.gif")
     def reload_game(x,y):
-        global invaders,inviders_loop,move_inimigos
+        global invaders,inviders_loop,move_inimigos,jogo_runing
         inviders_loop = True
+        jogo_runing = True
         for enemy in invaders:
             enemy.shape("invader.gif")
             enemy.penup()
@@ -246,9 +250,10 @@ def move_inimigos ():
     global left_index, right_index, down_index,direction,invaders
     inviders_loop = True
     while inviders_loop:
+        left_index, right_index, down_index = init_pos()
+        y = invaders[left_index].ycor()
         if direction == "left":
             x_left = invaders[left_index].xcor()
-            y = invaders[left_index].ycor()
             if x_left >= -280:
                 for pos_invaders in invaders:
                     position = pos_invaders.xcor()
