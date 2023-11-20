@@ -92,17 +92,19 @@ class jogo():
 
 
     def refresh(self):
-        invaders = self.invaders
         left_index, right_index, down_index = self.init_pos()
         y = self.invaders[left_index].ycor()
         if self.direction == "left":
-            x_left = invaders[left_index].xcor()
-
+            x_left = self.invaders[left_index].xcor()
             if x_left >= -280:
                 for pos_invaders in self.invaders:
                     position = pos_invaders.xcor()
                     position -= self.speedinvaders
                     pos_invaders.setx(position)
+                    if (pos_invaders.xcor() - self.player.xcor() <= 20) and (pos_invaders.ycor() - self.player.ycor() <= 20):
+                        self.game_breack()
+                        self.inviders_loop = False
+                        break
                 x_left -= self.speedinvaders
             else:
                 y -= 40
@@ -113,7 +115,7 @@ class jogo():
                     pos_invaders.sety(position)
 
         elif self.direction == "right":
-            x_right = invaders[right_index].xcor()
+            x_right = self.invaders[right_index].xcor()
             if x_right < 280:
                 for pos_invaders in self.invaders:
                     position = pos_invaders.xcor()
@@ -122,11 +124,16 @@ class jogo():
                 x_right += self.speedinvaders
             else:
                 y -= 40
-                direction = "left"
+                self.direction = "left"
                 for pos_invaders in self.invaders:
                     position = pos_invaders.ycor()
                     position -= 40
                     pos_invaders.sety(position)
+
+        y_down = self.invaders[down_index].ycor()
+        if y_down <= -280:
+            self.game_breack()
+            self.inviders_loop = False
     def write(self,x,y,text):
         game_over = turtle.Turtle()
         game_over.speed(0)
@@ -137,17 +144,14 @@ class jogo():
         game_over.hideturtle()
         return game_over
     def move_inimigos (self):
-        # global left_index, right_index, down_index,direction,invaders
         invaders = self.invaders
-        inviders_loop = self.inviders_loop
-        direction = self.direction
         while self.inviders_loop:
             left_index, right_index, down_index = self.init_pos()
-            y = invaders[left_index].ycor()
-            if direction == "left":
-                x_left = invaders[left_index].xcor()
+            y = self.invaders[left_index].ycor()
+            if self.direction == "left":
+                x_left = self.invaders[left_index].xcor()
                 if x_left >= -280:
-                    for pos_invaders in invaders:
+                    for pos_invaders in self.invaders:
                         position = pos_invaders.xcor()
                         position -= self.speedinvaders
                         pos_invaders.setx(position)
@@ -158,24 +162,24 @@ class jogo():
                     x_left -= self.speedinvaders
                 else:
                     y -= 40
-                    direction = "right"
-                    for pos_invaders in invaders:
+                    self.direction = "right"
+                    for pos_invaders in self.invaders:
                         position = pos_invaders.ycor()
                         position -= 40
                         pos_invaders.sety(position)
 
-            elif direction == "right":
-                x_right = invaders[right_index].xcor()
+            elif self.direction == "right":
+                x_right = self.invaders[right_index].xcor()
                 if x_right < 280:
-                    for pos_invaders in invaders:
+                    for pos_invaders in self.invaders:
                         position = pos_invaders.xcor()
                         position += self.speedinvaders
                         pos_invaders.setx(position)
                     x_right += self.speedinvaders
                 else:
                     y -= 40
-                    direction = "left"
-                    for pos_invaders in invaders:
+                    self.direction = "left"
+                    for pos_invaders in self.invaders:
                         position = pos_invaders.ycor()
                         position -= 40
                         pos_invaders.sety(position)
@@ -186,7 +190,6 @@ class jogo():
                 self.inviders_loop = False
                 break
     def move_fire(self,fire):
-        # global fire_on, x_fire, y_fire,score,jogo_runing
         if self.fire_on == False and self.jogo_runing:
             self.fire_on = True
             y_fire =fire.ycor()
@@ -198,18 +201,18 @@ class jogo():
                    
                     if x_fire >= x_ini -20 and x_fire <= x_ini + 20:
                         if y_fire >= y_ini:
-                            global left_index, right_index, down_index
                             inimigo.setx(random.randint(-280, 280))
                             inimigo.sety(random.randint(100, 250))
                             y_fire = 400
-                            left_index, right_index, down_index = self.init_pos()
                             self.score_pen.clear()
                             self.score+=1
                             self.score_pen.write("Score: "+str(self.score), False, align="left", font=("Arial", 14, "normal"))
                             break
+                    # self.refresh()
                 y_fire += self.firespeed
                 fire.sety(y_fire)
-                # self.refresh()
+                self.refresh()
+
 
             fire.hideturtle()
             fire.sety(-185)
@@ -246,7 +249,6 @@ class jogo():
         player.setx(x)
         if not self.fire_on:
             fire.setx(x)
-        print(fire.xcor())
     def init_pos(self):
         x_positions = []
         y_positions = []
